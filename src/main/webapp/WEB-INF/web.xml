@@ -1,0 +1,66 @@
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+         version="2.4">
+
+    <context-param>
+        <param-name>invalidUser</param-name>
+        <param-value>(User or Password Invalid !)</param-value>
+    </context-param>
+    <context-param>
+        <param-name>invalidRegister</param-name>
+        <param-value>(Username already taken !)</param-value>
+    </context-param>
+    <context-param>
+        <param-name>invalidSession</param-name>
+        <param-value>(Your session has expired !)</param-value>
+    </context-param>
+    <context-param>
+        <param-name>sessionTimeout</param-name>
+        <param-value>1</param-value>
+    </context-param>	
+
+    <!-- -
+    Player session ends when he is logged in and inactive for 
+    a configurable amount of time (1 minute by default)
+    First try, not working because session is invalidated after the user makes another request
+    <session-config>
+            <session-timeout>1</session-timeout>
+    </session-config>
+    -->
+    <!-- Second try -->
+    <web-app>
+        <listener>
+            <listener-class>com.gameofdice.users.sessions.SessionListener</listener-class>
+        </listener>
+    </web-app>
+
+    <!-- Servlet mapping -->
+    <servlet>
+        <servlet-name>Game</servlet-name>
+        <servlet-class>com.gameofdice.GamePage</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Game</servlet-name>
+        <url-pattern>/game</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>Login</servlet-name>
+        <servlet-class>com.gameofdice.LoginPage</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Login</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+
+    <!-- JSP mapping -->
+    <!--//testing purposes only-->
+    <servlet>
+        <servlet-name>Invalidate</servlet-name>
+        <jsp-file>/WEB-INF/view/invalidate.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Invalidate</servlet-name>
+        <url-pattern>/invalidate</url-pattern>   
+    </servlet-mapping>
+</web-app>
